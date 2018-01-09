@@ -1,0 +1,99 @@
+﻿@model ChangeUserRolesFormModel
+
+@{
+    ViewData["Title"] = "Change Roles";
+    string currentRoles = "None";
+    if (Model.UserRoles.Any())
+            {
+        currentRoles = string.Join(", ", Model.UserRoles);
+    }
+}
+
+<h2>@ViewData["Title"]</h2>
+<br />
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+            <h4>@Model.Username current roles: @currentRoles</h4>
+            <hr />
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-row">
+                <div class="form-group col-md-5">
+                    <label asp-for="AvailableRoles"></label>
+                    <select asp-for="AvailableRoles" asp-items="Model.AvailableRolesListItem" class="form-control form-control-sm h-75"></select>
+                    <span asp-validation-for="AvailableRoles" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-2">
+                    <label>&nbsp;</label>
+                    <div class="text-center h-75">
+                        <div class="btn-group-vertical btn-group-xs h-100" role="group">
+                            <input type="button" class="btn btn-outline-secondary h-100" id="btn-all-right" value=">>" />
+                            <input type="button" class="btn btn-outline-secondary h-100" id="btn-right" value=">" />
+                            <input type="button" class="btn btn-outline-secondary h-100" id="btn-left" value="<" />
+                            <input type="button" class="btn btn-outline-secondary h-100" id="btn-all-left" value="<<" />
+                        </div>
+                     </div>
+                </div>
+                <div class="form-group col-md-5">
+                    <label asp-for="SelectedRoles"></label>
+                    <select asp-for="SelectedRoles" asp-items="Model.SelectedRolesListItem" class="form-control form-control-sm h-75"></select>
+                    <span asp-validation-for="SelectedRoles" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <input asp-for="CurrentPage" type="hidden" value="@Model.CurrentPage" />
+                    <input asp-for="Search" type="hidden" value="@Model.Search" />
+                    <small class="note-list">* Use the arrows to add roles or remove existing ones.</small>
+                </div>
+            </div>
+            <div class="btn-group d-flex" role="group">
+                <a  asp-action="Index"
+                    asp-route-page="@Model.CurrentPage"
+                    asp-route-search="@Model.Search"
+                    class="btn btn-outline-secondary w-100" role="button">Cancel</a>
+                <button type="submit" class="btn btn-outline-primary w-100" id="save-roles">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            let availbaleRoles = '#AvailableRoles';
+            let selectedRoles = '#SelectedRoles';
+            let isRemoveOptsFrom = true;
+
+            $('#btn-right').on('click', function (e) {
+                e.preventDefault();
+                moveOneOption(availbaleRoles, selectedRoles, isRemoveOptsFrom);
+            })
+
+            $('#btn-left').on('click', function (e) {
+                e.preventDefault();
+                moveOneOption(selectedRoles, availbaleRoles, isRemoveOptsFrom);
+            })
+
+            $('#btn-all-right').on('click', function (e) {
+                e.preventDefault();
+                moveAllOptions(availbaleRoles, selectedRoles, isRemoveOptsFrom);
+            })
+
+            $('#btn-all-left').on('click', function (e) {
+                e.preventDefault();
+                moveAllOptions(selectedRoles, availbaleRoles, isRemoveOptsFrom);
+            })
+
+            // Select all options
+            $('#save-roles').on('click', function (e) {
+                $(`${availbaleRoles} option`).prop('selected', true);
+                $(`${selectedRoles} option`).prop('selected', true);
+            })
+        });
+    </script>
+
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

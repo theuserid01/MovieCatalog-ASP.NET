@@ -1,0 +1,143 @@
+﻿/* QR code generator */
+/*#qrCode {
+    margin: 15px;
+}*/
+
+/*
+1px  = 0.0625rem
+2px  = 0.125rem
+4px  = 0.25rem
+5px  = 0.3125rem
+6px  = 0.375rem
+8px  = 0.5rem
+10px = 0.625rem
+12px = 0.75rem
+14px = 0.875rem
+16px = 1rem (base)
+18px = 1.125rem
+20px = 1.25rem
+24px = 1.5rem
+30px = 1.875rem
+32px = 2rem
+*/
+
+/* <main> content padding top is set automatically by jQuery in site.js */
+
+.bg-primary-b3 {
+    background-color: #428BCA;  /* RGB(66,139,202) */
+}
+
+.btn-group-xs > .btn, .btn-xs {
+    border-radius: 0.2rem;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    padding: 0.125rem 0.25rem;
+}
+
+.navbar {
+    background-color: #585A5C;
+}
+
+main {
+    height: 940px;
+    padding-top: 56px;
+}
+
+#main-container {
+    font-size: 0.875rem;
+}
+
+#col-panel-left, #col-panel-right {
+    overflow: auto;
+}
+
+.col-pane-details {
+    background: #383E42; /* RGB(56, 62, 66) */
+    color: #E4E0EC;      /* RGB(228, 224, 236) */
+    /*transition: all 1.0s;
+    transition-timing-function: linear;*/
+}
+
+table > thead th {
+    text-align: center;
+}
+
+/* Fit to content */
+table td.fit, table th.fit {
+    white-space: nowrap;
+    width: 1%;
+}
+
+/*.btn-group-bottom {
+    bottom: 1.25rem;
+    position: absolute;
+}*/
+
+/* Disable links */
+.disabled {
+    pointer-events: none;
+}
+
+/*
+Make bootstrap-select work with bootstrap 4 see:
+https://github.com/silviomoreto/bootstrap-select/issues/1135
+*/
+.dropdown-toggle.btn-default {
+    color: #292b2c;
+    background-color: #fff;
+    border-color: #ccc;
+}
+
+.bootstrap-select.show > .dropdown-menu > .dropdown-menu {
+    display: block;
+}
+
+.bootstrap-select > .dropdown-menu > .dropdown-menu .hidden {
+    display: none;
+}
+
+.bootstrap-select > .dropdown-menu > .dropdown-menu li a {
+    display: block;
+    width: 100%;
+    padding: 3px 1.5rem;
+    clear: both;
+    font-weight: 400;
+    color: #292b2c;
+    text-align: inherit;
+    white-space: nowrap;
+    background: 0 0;
+    border: 0;
+    text-decoration: none;
+}
+
+.bootstrap-select > .dropdown-menu > .dropdown-menu li a:hover {
+    background-color: #f4f4f4;
+}
+
+.bootstrap-select > .dropdown-toggle {
+    width: 100%;
+}
+
+.dropdown-menu > .active > a {
+    color: #fff;
+    background-color: #337ab7;
+}
+
+.bootstrap-select .check-mark {
+    line-height: 14px;
+}
+
+.bootstrap-select .check-mark::after {
+    font-family: "FontAwesome";
+    content: "\f00c";
+}
+
+.bootstrap-select button {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Make filled out selects be the same size as empty selects */
+.bootstrap-select.btn-group .dropdown-toggle .filter-option {
+    display: inline;
+}

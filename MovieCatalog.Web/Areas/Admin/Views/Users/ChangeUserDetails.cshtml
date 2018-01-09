@@ -1,0 +1,42 @@
+﻿@model ChangeUserDetailsFormModel
+@{
+    ViewData["Title"] = "Change Details";
+}
+<h2>@ViewData["Title"]</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+            <h4>Change email and/or username for @Model.Username.</h4>
+            <hr />
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Email">Email</label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Username">Username</label>
+                <input asp-for="Username" class="form-control" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="CurrentPage" type="hidden" value="@Model.CurrentPage" />
+            </div>
+            <div class="form-group">
+                <input asp-for="Search" type="hidden" value="@Model.Search" />
+            </div>
+            <div class="btn-group d-flex" role="group">
+                <a  asp-action="Index"
+                    asp-route-page="@Model.CurrentPage"
+                    asp-route-search="@Model.Search"
+                    class="btn btn-outline-secondary w-100" role="button">Cancel</a>
+                <button type="submit" class="btn btn-outline-primary w-100">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

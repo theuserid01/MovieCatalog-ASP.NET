@@ -1,0 +1,133 @@
+﻿<!DOCTYPE html>
+<html class="h-100">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Movie Catalog</title>
+
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/css/colors.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
+              crossorigin="anonymous"
+              integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+              asp-fallback-href="~/lib/font-awesome/css/font-awesome.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
+              crossorigin="anonymous"
+              integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+</head>
+<body class="h-100">
+    <header>
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top">
+            <div class="container">
+                <a class="navbar-brand" href="/">Movie Catalog</a>
+                <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown" href="#">Movies</a>
+                            <div class="dropdown-menu">
+                                <a asp-area="@WebConstants.MoviesArea" asp-controller="Home" asp-action="Index" class="dropdown-item">All Movies</a>
+                                <a asp-area="@WebConstants.MoviesArea" asp-controller="Home" asp-action="Search" class="dropdown-item" id="search-movie">Create Movie Automatically</a>
+                                <a asp-area="@WebConstants.MoviesArea" asp-controller="Home" asp-action="Create" class="dropdown-item">Create Movie Manually</a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-area="Movies" asp-controller="Home" asp-action="Create" class="nav-link">TempCreate</a>
+                        </li>
+                    </ul>
+                    @await Html.PartialAsync("_LoginPartial")
+                </div>
+            </div>
+        </nav>
+        @if (TempData.ContainsKey(WebConstants.TempDataErrorMessageKey) || TempData.ContainsKey(WebConstants.TempDataSuccessMessageKey))
+        {
+            string alertType = string.Empty;
+            string message = string.Empty;
+            if (TempData.ContainsKey(WebConstants.TempDataErrorMessageKey))
+            {
+                alertType = "alert-danger";
+                message = TempData[WebConstants.TempDataErrorMessageKey].ToString();
+            }
+            else if (TempData.ContainsKey(WebConstants.TempDataSuccessMessageKey))
+            {
+                alertType = "alert-success";
+                message = TempData[WebConstants.TempDataSuccessMessageKey].ToString();
+            }
+            <div class="alert alert-dismissable @alertType d-flex container fixed-top" id="my-main-alert">
+                <div class="col-md-10">@message</div>
+                <div class="col-md-2">
+                    <div class="row">
+                        <div class="col-md-10 text-right"><span>5</span>&nbsp;seconds</div>
+                        <div class="col-md-2">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </header>
+    @{
+        string container = "container h-100";
+        string action = (ViewContext.RouteData.Values["action"] ?? "").ToString().ToLower();
+        string controller = (ViewContext.RouteData.Values["controller"] ?? "").ToString().ToLower();
+        string area = (ViewContext.RouteData.Values["area"] ?? "").ToString().ToLower();
+        if (area == "movies" && controller == "home" && action == "index")
+        {
+            container = "container-fluid h-100";
+        }
+    }
+    <main>
+        <div class="@container" id="main-container">
+            @RenderBody()
+        </div>
+    </main>
+
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+        <script src="~/lib/sweetalert2/dist/sweetalert2.all.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    </environment>
+
+    <environment exclude="Development">
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=">
+        </script>
+
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.bundle.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-VspmFJ2uqRrKr3en+IG0cIq1Cl/v/PHneDw6SQZYgrcr8ZZmZoQ3zhuGfMnSR/F2">
+        </script>
+
+        <script src="https://unpkg.com/sweetalert2@7.0.9/dist/sweetalert2.all.js"
+                asp-fallback-src="~/lib/sweetalert2/dist/sweetalert2.all.min.js">
+        </script>
+
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

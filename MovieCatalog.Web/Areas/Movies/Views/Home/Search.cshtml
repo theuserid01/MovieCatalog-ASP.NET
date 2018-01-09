@@ -1,0 +1,178 @@
+﻿@model MovieSearchTitleFormModel
+
+@{
+    string none = WebConstants.RadioButtonNoneValue;
+    string noResults = "Found no matching title results.";
+    ViewData["Title"] = $"Search Title Results for <em>{Model.SearchTitleText}</em>";
+}
+
+<h2>@Html.Raw(@ViewData["Title"])</h2>
+<form class="mb-5" method="post" asp-action="Search">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <fieldset class="form-group-row">
+        <legend class="col-form-legend col-md-6"><strong>IMDb</strong></legend>
+        <div class="col-md-12">
+        @if (Model.ImdbExceptionMessage != null)
+        {
+            <h3>@Model.ImdbExceptionMessage</h3>
+        }
+        else if (Model.ImdbSearchTitleResults.Count() == 0)
+        {
+            <h3>@noResults</h3>
+        }
+        else
+        {
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input asp-for="@Model.ImdbSelectedTitle" class="form-check-input" type="radio" value="@none" checked="checked">
+                    None
+                </label>
+            </div>
+            foreach (var kvp in Model.ImdbSearchTitleResults)
+            {
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input asp-for="@Model.ImdbSelectedTitle" class="form-check-input" type="radio" value="@kvp.Value">
+                        <a class="external-link" href="@string.Format(GlobalConstants.ImdbMainContentUrl, kvp.Value)">@kvp.Key</a>
+                    </label>
+                </div>
+            }
+        }
+        </div>
+    </fieldset>
+    <fieldset class="form-group-row">
+        <legend class="col-form-legend col-md-6"><strong>Blu-ray.com</strong></legend>
+        <div class="col-md-12">
+        @if (Model.BlurayDotComExceptionMessage != null)
+        {
+            <h3>@Model.BlurayDotComExceptionMessage</h3>
+        }
+        else if (Model.BlurayDoComSearchTitleResults.Count() == 0)
+        {
+            <h3>@noResults</h3>
+        }
+        else
+        {
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input asp-for="@Model.BlurayDotComSelectedTitle" class="form-check-input" type="radio" value="@none" checked="checked">
+                    None
+                </label>
+            </div>
+            foreach (var kvp in Model.BlurayDoComSearchTitleResults)
+            {
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input asp-for="@Model.BlurayDotComSelectedTitle" class="form-check-input" type="radio" value="@kvp.Value">
+                        <a class="external-link" href="@string.Format(GlobalConstants.BlurayDotComMainContentUrl, kvp.Value)">@kvp.Key</a>
+                    </label>
+                </div>
+            }
+        }
+        </div>
+    </fieldset>
+    <fieldset class="form-group-row">
+        <legend class="col-form-legend col-md-6"><strong>Box Office Mojo</strong></legend>
+        <div class="col-md-12">
+        @if (Model.BoxOfficeMojoExceptionMessage != null)
+        {
+            <h3>@Model.BoxOfficeMojoExceptionMessage</h3>
+        }
+        else if (Model.BoxOfficeMojoSearchTitleResults.Count() == 0)
+        {
+            <h3>@noResults</h3>
+        }
+        else
+        {
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input asp-for="@Model.BoxOfficeMojoSelectedTitle" class="form-check-input" type="radio" value="@none" checked="checked">
+                    None
+                </label>
+            </div>
+            foreach (var kvp in Model.BoxOfficeMojoSearchTitleResults)
+            {
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input asp-for="@Model.BoxOfficeMojoSelectedTitle" class="form-check-input" type="radio" value="@kvp.Value">
+                        <a class="external-link" href="@string.Format(GlobalConstants.BoxOfficeMojoMainContentUrl, kvp.Value)">@kvp.Key</a>
+                    </label>
+                </div>
+            }
+        }
+        </div>
+    </fieldset>
+    <fieldset class="form-group-row">
+        <legend class="col-form-legend col-md-6"><strong>DVD Empire</strong></legend>
+        <div class="col-md-12">
+        @if (Model.DvdEmpireExceptionMessage != null)
+        {
+            <h3>@Model.DvdEmpireExceptionMessage</h3>
+        }
+        else if (Model.DvdEmpireSearchTitleResults.Count() == 0)
+        {
+            <h3>@noResults</h3>
+        }
+        else
+        {
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input asp-for="@Model.DvdEmpireSelectedTitle" class="form-check-input" type="radio" value="@none" checked="checked">
+                    None
+                </label>
+            </div>
+            foreach (var kvp in Model.DvdEmpireSearchTitleResults)
+            {
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input asp-for="@Model.DvdEmpireSelectedTitle" class="form-check-input" type="radio" value="@kvp.Value">
+                        <a class="external-link" href="@string.Format(GlobalConstants.DvdEmpireMainContentUrl, kvp.Value)">@kvp.Key</a>
+                    </label>
+                </div>
+            }
+        }
+        </div>
+    </fieldset>
+    <fieldset class="form-group-row">
+        <legend class="col-form-legend col-md-6"><strong>Rotten Tomatoes</strong></legend>
+        <div class="col-md-12">
+        @if (Model.RottentTomattoesExceptionMessage != null)
+        {
+            <h3>@Model.RottentTomattoesExceptionMessage</h3>
+        }
+        else if (Model.RottenTomatoesSearchTitleResults.Count() == 0)
+        {
+            <h3>@noResults</h3>
+        }
+        else
+        {
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input asp-for="@Model.RottenTomattoesSelectedTitle" class="form-check-input" type="radio" value="@none" checked="checked">
+                    None
+                </label>
+            </div>
+            foreach (var kvp in Model.RottenTomatoesSearchTitleResults)
+            {
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input asp-for="@Model.RottenTomattoesSelectedTitle" class="form-check-input" type="radio" value="@kvp.Value">
+                        <a class="external-link" href="@string.Format(GlobalConstants.RottenTomatoesMainContentUrl, kvp.Value)">@kvp.Key</a>
+                    </label>
+                </div>
+            }
+        }
+        </div>
+    </fieldset>
+    <div class="form-row">
+        <div class="col-md-6 btn-group d-flex" role="group">
+            <a asp-action="Index" class="btn btn-outline-secondary w-100" role="button">Cancel</a>
+            <button type="submit" class="btn btn-outline-primary w-100" id="btn-submit-search">Submit</button>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

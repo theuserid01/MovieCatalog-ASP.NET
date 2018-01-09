@@ -1,0 +1,60 @@
+﻿@model MovieIndexViewModel
+
+@{
+    ViewData["Title"] = "Welcome to Movie Catalog";
+}
+
+<div class="row h-100">
+    <div class="col-md-4" id="col-panel-left">
+        <div class="input-group input-group-sm mb-1">
+            <span class="input-group-addon">Search</span>
+            <input type="text" class="form-control" id="main-search" placeholder="Genre OR Movie Title OR Production Year">
+        </div>
+        @if (Model.AllMovies.Count() == 0)
+        {
+            <h3>No movies in the catalog.</h3>
+        }
+        else
+        {
+            var movies = Model.AllMovies.ToList();
+            for (int i = 0; i < movies.Count(); i++)
+            {
+                var movie = movies[i];
+                string thumbnail = WebConstants.NoImageFilePath;
+                var fallbackImage = Html.Raw($"this.onerror=null;this.src='{WebConstants.NoImageFilePath}';");
+                if (movie.Thumbnail != null)
+                {
+                    thumbnail = string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(movie.Thumbnail));
+                }
+
+                if (i % 4 == 0)
+                {
+                    @:<div class="card-group">
+                }
+                <div class="card col-3 justify-content-between p-1">
+                    <a asp-action="Index" asp-route-id="@movie.Id" class="ajax-thumbnail">
+                        <img class="card-image-top img-fluid" alt="no image" onerror="@fallbackImage" src="@thumbnail">
+                    </a>
+                    <div class="card-footer p-1 text-truncate">
+                        <p class="card-subtitle"><small>@movie.Title (@movie.ProductionYear)</small></p>
+                        <p hidden>@string.Join(", ", movie.Genres.Select(g => g.Name))</p>
+                    </div>
+                </div>
+                if (i % 4 == 3 || i == movies.Count() - 1)
+                {
+                    @:</div>
+                }
+            }
+        }
+    </div>
+    <div class="col-md-8 col-pane-details" id="col-panel-right">
+        @if (Model.MovieDetails != null)
+        {
+             @Html.Partial("_Details", Model)
+        }
+        else
+        {
+            <h3 class="mt-3 text-center">No details to display.</h3>
+        }
+    </div>
+</div>

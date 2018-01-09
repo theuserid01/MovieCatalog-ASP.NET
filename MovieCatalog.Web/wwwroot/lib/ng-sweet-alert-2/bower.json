@@ -1,0 +1,30 @@
+{
+  "name": "ng-sweet-alert-2",
+  "description": "Sweet Alert 2 Directive",
+  "version": "0.0.4",
+  "authors": [
+    "Karl Vaillant <vaillant.karl.971@gmail.com>"
+  ],
+  "thanksto" : [
+    "Tushar Borole <tushariscoolster@gmail.com>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kvaillant/ng-sweet-alert-2"
+  },
+  "homepage": "https://github.com/kvaillant/ng-sweet-alert-2",
+  "license": "LGPL-2.1",
+  "main": "ng-sweet-alert-2.js",
+  "keywords": ["sweetalert2",
+               "angular",
+               "alert"
+  ],
+  "ignore": [
+    "gh-pages",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "sweetalert2": "*"
+  }
+}

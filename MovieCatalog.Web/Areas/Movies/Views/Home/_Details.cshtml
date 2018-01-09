@@ -1,0 +1,190 @@
+﻿@model MovieIndexViewModel
+
+@{
+    ViewData["Title"] = "Movie Details";
+}
+
+@{
+    string na = "n/a";
+    string thumbnail = WebConstants.NoImageFilePath;
+    var fallbackImage = Html.Raw($"this.onerror=null;this.src='{WebConstants.NoImageFilePath}';");
+    var md = Model.MovieDetails;
+    string boxOfficeMojoId = string.IsNullOrEmpty(md.BoxOfficeMojoId) ? md.BoxOfficeMojoId : na;
+    string budget = md.Budget > 0 ? $"${md.Budget / 1_000_000m:F1} M" : na;
+    string colors = md.Colors.Count() > 0 ? string.Join(", ", md.Colors.Select(c => c.Name)) : na;
+    string countries = md.Countries.Count() > 0 ? string.Join(", ", md.Countries.Select(c => c.Name)) : na;
+    string genres = md.Genres.Count() > 0 ? string.Join(", ", md.Genres.Select(g => g.Name)) : na;
+    string grossForeign = md.GrossForeign > 0 ? $"${md.GrossForeign / 1_000_000m:F1} M" : na;
+    string grossUsa = md.GrossUsa > 0 ? $"${md.GrossUsa / 1_000_000m:F1} M" : na;
+    string imdbId = !string.IsNullOrEmpty(md.ImdbId) ? md.ImdbId : na;
+    string imdbTop250 = md.ImdbTop250 > 0 ? $" - Top 250: #{md.ImdbTop250}" : string.Empty;
+    string imdbUsersRating = md.ImdbUsersRating > 0 ? $"Users: {md.ImdbUsersRating:F1}" : na;
+    string languages = md.Languages.Count() > 0 ? string.Join(", ", md.Languages.Select(l => l.Name)) : na;
+    string originalTitle = md.OriginalTitle;
+    string productionYear = md.ProductionYear > 0 ? md.ProductionYear.ToString() : na;
+    string rottenTomatoesCriticsScore = md.RottenTomatoesCriticsScore > 0 ? $"{md.RottenTomatoesCriticsScore}%" : na;
+    string rottenTomatoesId = !string.IsNullOrEmpty(md.RottenTomatoesId) ? md.RottenTomatoesId : na;
+    string rottenTomatoesUsersScore = md.RottenTomatoesUsersScore > 0 ? $"{md.RottenTomatoesUsersScore}%" : na;
+    string runtime = md.Runtime > 0 ? md.Runtime.ToString() : na;
+    string synopsis = !string.IsNullOrEmpty(md.Synopsis) ? md.Synopsis : na;
+    string extendedTitle = $"{md.Title} ({md.ProductionYear})";
+
+    decimal grossTotal = md.GrossForeign + md.GrossUsa;
+    string grossWorldwide = grossTotal > 0 ? $", Worldwide: ${grossTotal / 1_000_000m:F1} M" : string.Empty;
+
+    if (md.Thumbnail != null)
+    {
+        thumbnail = string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(md.Thumbnail));
+    }
+
+}
+<h5 class="mt-3 text-center">@extendedTitle</h5>
+<table class="bg-primary-b3 table table-bordered table-sm table-responsive">
+    <tr>
+        <td class="p-0">
+            <img alt="no image" height="300" onerror="@fallbackImage" src="@thumbnail" />
+        </td>
+        <td class="p-0 w-100">
+            <div style="height: 300px; overflow: auto; width: 100%">
+                <table style="border-style: hidden; height: 100%; width: 100%">
+                    <thead>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th class="fit">Genre</th>
+                            <td>@genres</td>
+                        </tr>
+                        <tr>
+                            <th class="fit">Country</th>
+                            <td>@countries</td>
+                        </tr>
+                        <tr>
+                            <th class="fit">Language</th>
+                            <td>@languages</td>
+                        </tr>
+                        <tr>
+                            <th class="fit">Color</th>
+                            <td>@colors</td>
+                        </tr>
+                        <tr>
+                            <th class="fit">Budget</th>
+                            <td>@budget</td>
+                        </tr>
+                        <tr>
+                            <th class="fit">Gross</th>
+                            <td>USA: @grossUsa, Foreign: @grossForeign@grossWorldwide</td>
+                        </tr>
+                        <tr>
+                            <th class="fit">IMDb Rating</th>
+                            <td class="p-0">
+                                @if (md.ImdbId != null)
+                                {
+                                    string imdbUrl = string.Format(GlobalConstants.ImdbMainContentUrl, md.ImdbId);
+                                    <a class="external-link" href="@imdbUrl">
+                                        <img class="m-1" height="20" src="~/images/logos/imdb.png" alt="No Image" />
+                                    </a>
+                                }
+                                <span>@imdbUsersRating@imdbTop250</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="fit">Rotten Tomatoes Score</th>
+                            <td class="p-0">
+                                @if (md.RottenTomatoesId != null)
+                                {
+                                    string rtUrl = string.Format(GlobalConstants.RottenTomatoesMainContentUrl, md.RottenTomatoesId);
+                                    <a class="external-link" href="@rtUrl">
+                                        <img class="m-1" height="20" src="~/images/logos/rt.png" alt="No Image" />
+                                    </a>
+                                }
+                                <span>Critics: @rottenTomatoesCriticsScore, Users: @rottenTomatoesUsersScore</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="fit">Main Festivals</th>
+                            <td>// TODO</td>
+                        </tr>
+                        <tr>
+                            <th class="fit">Release</th>
+                            <td>// TODO</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </td>
+    </tr>
+</table>
+<h6>Crew</h6>
+@if (Model.MovieDetails.Crew == null || Model.MovieDetails.Crew.Count() == 0)
+{
+    <p>@na</p>
+}
+else
+{
+    <table class="table table-bordered table-responsive table-sm">
+        <thead>
+            <tr>
+                <th class="fit">Role</th>
+                <th style="width: 2000px;">Name</th>
+            </tr>
+        </thead>
+            @*<a class="artist-link text-nowrap text-truncate text-white" href=""></a>*@
+            @foreach (CrewRole role in Enum.GetValues(typeof(CrewRole)))
+            {
+                var artists = Model.MovieDetails.Crew.Where(a => a.Role == role).Select(a => a.Name);
+                string names = artists.Count() > 0 ? string.Join(", ", artists) : na;
+                <tr class="text-truncate">
+                    <td>@role</td>
+                    <td>@names</td>
+                </tr>
+            }
+    </table>
+}
+<h6>Cast</h6>
+@if (Model.MovieDetails.Cast == null || Model.MovieDetails.Cast.Count() == 0)
+{
+    <p>@na</p>
+}
+else
+{
+    <table class="table table-bordered table-responsive table-sm">
+        <thead>
+            <tr>
+                <th style="width: 2000px;">Name</th>
+                <th style="width: 2000px;">Characher</th>
+            </tr>
+        </thead>
+
+            @foreach (var artist in Model.MovieDetails.Cast)
+            {
+                <tr>
+                    @{ string artistUrl = $"{GlobalConstants.ImdbDomain}/name/{artist.ImdbId}"; }
+                    <td><a class="external-link text-nowrap text-truncate text-white" href="@artistUrl">@artist.Name</a></td>
+                    <td class="text-nowrap text-truncate">@artist.Character</td>
+                </tr>
+                        }
+    </table>
+}
+<h6>Synopsis</h6>
+<p>@synopsis</p>
+<h6>Awards</h6>
+<p>// TODO</p>
+<h6>Home Videos</h6>
+<p>// TODO</p>
+<h6>Reviews</h6>
+<p>// TODO</p>
+<div class="btn-group btn-group-bottom btn-group-sm d-flex w-50" role="group">
+    @if (User.IsInRole(GlobalConstants.AdministratorRole))
+    {
+        <a asp-action="Edit" asp-route-id="@Model.MovieDetails.Id" class="btn btn-warning w-100" role="button">Edit</a>
+        <a asp-action="Delete"
+           class="btn btn-danger btn-delete-movie w-100"
+           data-value="@extendedTitle"
+           role="button"
+           value="@Model.MovieDetails.Id">Delete</a>
+    }
+    else
+    {
+        <a asp-action="Edit" asp-route-id="@Model.MovieDetails.Id" class="btn btn-warning w-50" role="button">Edit</a>
+    }
+</div>

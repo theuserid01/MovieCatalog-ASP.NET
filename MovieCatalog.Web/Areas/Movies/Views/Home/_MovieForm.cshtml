@@ -1,0 +1,300 @@
+﻿@model MovieFormMainModel
+
+@{
+    // Resolves submit action when model coems from [HttpPost]Search
+    string action = (ViewContext.RouteData.Values["action"] ?? "").ToString().ToLower();
+    string postAction = "Create";
+    if (action == "edit")
+    {
+        postAction = "Edit";
+    }
+}
+<h2>@ViewData["Title"]</h2>
+<form asp-action="@postAction" class="mb-5" enctype="multipart/form-data" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-row">
+        <div class=" col-md-6 form-group">
+            <label asp-for="Title"></label>
+            <input asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="form-text text-danger"></span>
+        </div>
+        <div class="col-md-6 form-group">
+            <label asp-for="OriginalTitle"></label>
+            <input asp-for="OriginalTitle" class="form-control" />
+            <span asp-validation-for="OriginalTitle" class="form-text text-danger"></span>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-6 form-group">
+            <label asp-for="ProductionYear"></label>
+            <input asp-for="ProductionYear" class="form-control" min="@DataConstants.ProductionYearMinLength" />
+            <span asp-validation-for="ProductionYear" class="form-text text-danger"></span>
+        </div>
+        <div class="col-md-6 form-group">
+            <label asp-for="Runtime"></label>
+            <input asp-for="Runtime" class="form-control" min="0" max="@DataConstants.RuntimeMaxLength" />
+            <span asp-validation-for="Runtime" class="form-text text-danger"></span>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-6 form-group">
+            <label asp-for="SelectedColors"></label>
+            <select asp-for="SelectedColors" asp-items="Model.AllColors" class="form-control selectpicker" multiple title="Choose Colors..."></select>
+        </div>
+        <div class="col-md-6 form-group">
+            <label asp-for="SelectedGenres"></label>
+            <select asp-for="SelectedGenres" asp-items="Model.AllGenres" class="form-control selectpicker" data-live-search="true" multiple title="Choose Genres..."></select>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-6 form-group">
+            <label asp-for="SelectedCountries"></label>
+            <select asp-for="SelectedCountries" asp-items="Model.AllCountries" class="form-control selectpicker" data-live-search="true" multiple title="Choose Countries..."></select>
+        </div>
+        <div class="col-md-6 form-group">
+            <label asp-for="SelectedLanguages"></label>
+            <select asp-for="SelectedLanguages" asp-items="Model.AllLanguages" class="form-control selectpicker" data-live-search="true" multiple title="Choose Languages..."></select>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class=" col-md-4 form-group">
+            <label asp-for="Budget"></label>
+            <input asp-for="Budget" class="form-control" />
+            <span asp-validation-for="Budget" class="form-text text-danger"></span>
+        </div>
+        <div class="col-md-4 form-group">
+            <label asp-for="GrossForeign"></label>
+            <input asp-for="GrossForeign" class="form-control" />
+            <span asp-validation-for="GrossForeign" class="form-text text-danger"></span>
+        </div>
+        <div class="col-md-4 form-group">
+            <label asp-for="GrossUsa"></label>
+            <input asp-for="GrossUsa" class="form-control" />
+            <span asp-validation-for="GrossUsa" class="form-text text-danger"></span>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class=" col-md-4 form-group">
+            <label asp-for="BoxOfficeMojoId"></label>
+            <input asp-for="BoxOfficeMojoId" class="form-control" />
+            <span asp-validation-for="BoxOfficeMojoId" class="form-text text-danger"></span>
+        </div>
+        <div class="col-md-4 form-group">
+            <label asp-for="ImdbId"></label>
+            <input asp-for="ImdbId" class="form-control" />
+            <span asp-validation-for="ImdbId" class="form-text text-danger"></span>
+        </div>
+        <div class="col-md-4 form-group">
+            <label asp-for="RottenTomatoesId"></label>
+            <input asp-for="RottenTomatoesId" class="form-control" />
+            <span asp-validation-for="RottenTomatoesId" class="form-text text-danger"></span>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class=" col-md-3 form-group">
+            <label asp-for="ImdbUsersRating"></label>
+            <input asp-for="ImdbUsersRating" class="form-control" min="0" max="10" />
+            <span asp-validation-for="ImdbUsersRating" class="form-text text-danger"></span>
+        </div>
+        <div class="col-md-3 form-group">
+            <label asp-for="ImdbTop250"></label>
+            <input asp-for="ImdbTop250" class="form-control" min="0" max="250" />
+            <span asp-validation-for="ImdbTop250" class="form-text text-danger"></span>
+        </div>
+        <div class="col-md-3 form-group">
+            <label asp-for="RottenTomatoesCriticsScore"></label>
+            <input asp-for="RottenTomatoesCriticsScore" class="form-control" min="0" max="100" />
+            <span asp-validation-for="RottenTomatoesCriticsScore" class="form-text text-danger"></span>
+        </div>
+        <div class="col-md-3 form-group">
+            <label asp-for="RottenTomatoesUsersScore"></label>
+            <input asp-for="RottenTomatoesUsersScore" class="form-control" min="0" max="100" />
+            <span asp-validation-for="RottenTomatoesUsersScore" class="form-text text-danger"></span>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-1">
+            <h4><strong>Crew</strong><span class="ml-2">@Model.Crew.Count()</span></h4>
+        </div>
+        <div class="col-md-1">
+            <buton class="btn btn-primary btn-sm" id="btn-add-crew">Add Crew</buton>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-3 form-group m-0">
+            <label>Name</label>
+        </div>
+        <div class="col-md-3 form-group m-0">
+            <label>Role</label>
+        </div>
+        <div class="col-md-3 form-group m-0">
+            <label>IMDb Id</label>
+        </div>
+        <div class="col-md-3 form-group m-0">
+            <label>Photo Url</label>
+        </div>
+    </div>
+    <div class="form-row mb-3" id="row-crew">
+    @if (Model.Crew.Count() == 0)
+    {
+        <fieldset class="col-md-12 form-group m-0" disabled>
+            <div class="form-row">
+                <div class="col-md-3 form-group m-0">
+                    <input type="text" class="form-control" name="Crew[0].Name" value="" />
+                    <span asp-validation-for="Crew[0].Name" class="form-text text-danger"></span>
+                </div>
+                <div class="col-md-3 form-group m-0">
+                    <select class="form-control" id="CrewRole[0]" name="Crew[0].Role">
+                        <option selected disabled value="">Select</option>
+                        @foreach (CrewRole role in Enum.GetValues(typeof(CrewRole)))
+                        {
+                            <option value="@((int)role)">@role</option>
+                        }
+                    </select>
+                    <span asp-validation-for="Crew[0].Role" class="form-text text-danger"></span>
+                </div>
+                <div class="col-md-3 form-group m-0">
+                    <input type="text" class="form-control" name="Crew[0].ImdbId" value="" />
+                    <span asp-validation-for="Crew[0].ImdbId" class="form-text text-danger"></span>
+                </div>
+                <div class="col-md-3 form-group m-0 d-flex align-items-center">
+                    <input type="text" class="form-control" name="Crew[0].PhotoUrl" value="" />
+                    <i class="btn-remove-crew fa fa-times ml-2" aria-hidden="true" style="font-size: 1.25rem;"></i>
+                    <span asp-validation-for="Crew[0].PhotoUrl" class="form-text text-danger"></span>
+                </div>
+            </div>
+        </fieldset>
+    }
+    else
+    {
+        for (int i = 0; i < Model.Crew.Count(); i++)
+        {
+            <fieldset class="col-md-12 form-group m-0">
+                <div class="form-row">
+                    <div class="col-md-3 form-group m-0">
+                        <input type="text" class="form-control" name="Crew[@i].Name" value="@Model.Crew[i].Name" />
+                        <span asp-validation-for="Crew[i].Name" class="form-text text-danger"></span>
+                    </div>
+                    <div class="col-md-3 form-group m-0">
+                        <select asp-for="Crew[i].Role" asp-items="Html.GetEnumSelectList<CrewRole>()" class="form-control">
+                            <option selected="selected">@Model.Crew[i].Role</option>
+                        </select>
+                        <span asp-validation-for="Crew[i].Role" class="form-text text-danger"></span>
+                    </div>
+                    <div class="col-md-3 form-group m-0">
+                        <input type="text" class="form-control" name="Crew[@i].ImdbId" value="@Model.Crew[i].ImdbId" />
+                        <span asp-validation-for="Crew[i].ImdbId" class="form-text text-danger"></span>
+                    </div>
+                    <div class="col-md-3 form-group m-0 d-flex align-items-center">
+                        <input type="text" class="form-control" name="Crew[@i].PhotoUrl" value="@Model.Crew[i].PhotoUrl" />
+                        <i class="btn-remove-crew fa fa-times ml-2" aria-hidden="true" style="font-size: 1.25rem;"></i>
+                        <span asp-validation-for="Crew[i].PhotoUrl" class="form-text text-danger"></span>
+                    </div>
+                </div>
+            </fieldset>
+        }
+
+    }
+    </div>
+    <div class="form-row">
+        <div class="col-md-1">
+            <h4><strong>Cast</strong><span class="ml-2">@Model.Cast.Count()</span></h4>
+        </div>
+        <div class="col-md-1">
+            <buton class="btn btn-primary btn-sm" id="btn-add-cast">Add Cast</buton>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-3 form-group m-0">
+            <label>Name</label>
+        </div>
+        <div class="col-md-3 form-group m-0">
+            <label>Character</label>
+        </div>
+        <div class="col-md-3 form-group m-0">
+            <label>IMDb Id</label>
+        </div>
+        <div class="col-md-3 form-group m-0">
+            <label>Photo Url</label>
+        </div>
+    </div>
+    <div class="form-row mb-3" id="row-cast">
+    @if (Model.Cast.Count() == 0)
+    {
+        <fieldset class="col-md-12 form-group m-0" disabled>
+            <div class="form-row">
+                <div class="col-md-3 form-group m-0">
+                    <input type="text" class="form-control" name="Cast[0].Name" value="" />
+                    <span asp-validation-for="Cast[0].Name" class="form-text text-danger"></span>
+                </div>
+                <div class="col-md-3 form-group m-0">
+                    <input type="text" class="form-control" name="Cast[0].Character" value="" />
+                    <span asp-validation-for="Cast[0].Character" class="form-text text-danger"></span>
+                </div>
+                <div class="col-md-3 form-group m-0">
+                    <input type="text" class="form-control" name="Cast[0].ImdbId" value="" />
+                    <span asp-validation-for="Cast[0].ImdbId" class="form-text text-danger"></span>
+                </div>
+                <div class="col-md-3 form-group m-0 d-flex align-items-center">
+                    <input type="text" class="form-control" name="Cast[0].PhotoUrl" value="" />
+                    <i class="btn-remove-cast fa fa-times ml-2" aria-hidden="true" style="font-size: 1.25rem;"></i>
+                    <span asp-validation-for="Cast[0].PhotoUrl" class="form-text text-danger"></span>
+                </div>
+            </div>
+        </fieldset>
+    }
+    else
+    {
+        for (int i = 0; i < Model.Cast.Count(); i++)
+        {
+            <fieldset class="col-md-12 form-group m-0">
+                <div class="form-row">
+                    <div class="col-md-3 form-group m-0">
+                        <input type="text" class="form-control" name="Cast[@i].Name" value="@Model.Cast[i].Name" />
+                        <span asp-validation-for="Cast[i].Name" class="form-text text-danger"></span>
+                    </div>
+                    <div class="col-md-3 form-group m-0">
+                        <input type="text" class="form-control" name="Cast[@i].Character" value="@Model.Cast[i].Character" />
+                        <span asp-validation-for="Cast[i].Character" class="form-text text-danger"></span>
+                    </div>
+                    <div class="col-md-3 form-group m-0">
+                        <input type="text" class="form-control" name="Cast[@i].ImdbId" value="@Model.Cast[i].ImdbId" />
+                        <span asp-validation-for="Cast[i].ImdbId" class="form-text text-danger"></span>
+                    </div>
+                    <div class="col-md-3 form-group m-0 d-flex align-items-center">
+                        <input type="text" class="form-control" name="Cast[@i].PhotoUrl" value="@Model.Cast[i].PhotoUrl" />
+                        <i class="btn-remove-cast fa fa-times ml-2" aria-hidden="true" style="font-size: 1.25rem;"></i>
+                        <span asp-validation-for="Cast[i].PhotoUrl" class="form-text text-danger"></span>
+                    </div>
+                </div>
+            </fieldset>
+        }
+
+    }
+    </div>
+    <div class="form-row">
+        <div class="col-md-6 form-group">
+            <label asp-for="Posters"></label>
+            <input type="file" name="files" accept="image/*" multiple style="width: 13.75rem;" />
+            <button type="button" class="btn btn-danger btn-sm" id="file-clear" onclick="$(this).prev().val('');">Clear Files</button>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-6 form-group">
+            <label asp-for="Synopsis"></label>
+            <textarea asp-for="Synopsis" class="form-control" rows="5"></textarea>
+            <span asp-validation-for="Synopsis" class="form-text text-danger"></span>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-6 btn-group d-flex" role="group">
+            <a asp-action="Index" class="btn btn-outline-secondary w-100" role="button">Cancel</a>
+            <button type="submit" class="btn btn-outline-primary w-100">Save</button>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

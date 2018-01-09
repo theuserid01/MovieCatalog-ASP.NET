@@ -1,0 +1,16 @@
+INSERT INTO AgeRatings (Name) VALUES
+('12'),
+('15'),
+('18'),
+('E'),
+('FSK 12'),
+('FSK 16'),
+('FSK 6'),
+('G'),
+('NC-17'),
+('NR'),
+('PG'),
+('PG-13'),
+('R'),
+('U'),
+('uk-PG')
